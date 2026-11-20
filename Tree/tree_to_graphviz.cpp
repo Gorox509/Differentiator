@@ -17,8 +17,6 @@ static int graphviz_print_params(FILE *fp);
 static int graphviz_print(FILE *fp, Tree *tree, int level);
 static int graphviz_print_node(FILE *fp, Tree *node, int level);
 
-static const char *type_to_str(Tree *node);
-
 
 
 int tree_to_graphviz(Tree *tree) {
@@ -112,24 +110,16 @@ int graphviz_print_node(FILE *fp, Tree *node, int level) {
 
     if (LEFT(node) == NULL && RIGHT(node) == NULL) fillcolor = "olivedrab1";
 
+    const char *op_or_var = NULL;
+    char s[MAX_STR_LEN] = "";
+    if (TYPE(node) == operation) op_or_var = operation_to_str(node);
+    if (TYPE(node) == variable) op_or_var = "x";
+    if (TYPE(node) == constant) sprintf(s, "%lg", DATA(node).val_double);
+    if (op_or_var == NULL) op_or_var = "";
     //TODO: rank
     fprintf(fp, "node%p[ color = %s , style = filled, fillcolor = %s, shape = Mrecord , "
-        "label = \"{" ON_TREE_DEBUG("<address> address = %p |") "type = %s | val = %lg" ON_TREE_DEBUG(" | { <left> left = %p | <right> right = %p }") " }\" ];\n",
-        node, color, fillcolor, ON_TREE_DEBUG(node,) type_to_str(node), TYPE(node)==constant?DATA(node).val_double:DATA(node).val_int ON_TREE_DEBUG(, LEFT(node), RIGHT(node)));
+        "label = \"{" ON_TREE_DEBUG("<address> address = %p |") "%s | %s" ON_TREE_DEBUG(" | { <left> left = %p | <right> right = %p }") " }\" ];\n",
+        node, color, fillcolor, ON_TREE_DEBUG(node,) type_to_str(node), strcat(s, op_or_var) ON_TREE_DEBUG(, LEFT(node), RIGHT(node)));
 
     return TREE_GRAPHVIZ_OK;
-}
-
-
-
-const char *type_to_str(Tree *node) {
-    assert(node != NULL);
-
-    switch (TYPE(node)) {
-        case operation: return "OP";
-        case variable:  return "VAR";
-        case constant:  return "CONST";
-
-        default: return "";
-    }
 }

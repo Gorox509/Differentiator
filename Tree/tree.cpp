@@ -7,8 +7,8 @@ static int tree_insert_right(Tree *tree, tree_elem_t val);
 
 static void tree_print_data(FILE *fp, Tree *tree);
 static void print_constant(FILE *fp, double val);
-static void print_operation(FILE *fp, int num);
-static void print_variable(FILE *fp, int num);
+static void print_operation(FILE *fp, int opcode);
+static void print_variable(FILE *fp, int var_num);
 
 
 void tree_error_print(int err) {
@@ -138,13 +138,15 @@ void print_operation(FILE *fp, int num) {
         case divide:
             fprintf(fp, "/");
             return;
+
+        case unknown:
         default: return;
     }
 }
 
-void print_variable(FILE *fp, int num) {
+void print_variable(FILE *fp, int var_num) {
     assert(fp != NULL);
-    fprintf(stderr, "x"); //TODO: cringe
+    fprintf(fp, "x"); //TODO: cringe
 }
 
 
@@ -168,4 +170,32 @@ FILE *safe_fopen(const char *filename, const char *mode) {
             return NULL;
         }
     return fp;
+}
+
+
+const char *type_to_str(Tree *node) {
+    assert(node != NULL);
+
+    switch (TYPE(node)) {
+        case operation: return "OP";
+        case variable:  return "VAR";
+        case constant:  return "CONST";
+
+        default: return "";
+    }
+}
+
+
+const char *operation_to_str(Tree *node) {
+    assert(node != NULL);
+    assert(TYPE(node) == operation);
+
+    switch (DATA(node).val_int) {
+        case plus:  return "+";
+        case minus: return "-";
+        case mult:  return "*";
+        case divide:return "/";
+
+        default: return "";
+    }
 }

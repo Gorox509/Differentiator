@@ -124,10 +124,10 @@ bool is_all_digits(const char *str, int str_len) {
 
 bool is_operation(const char *str, int str_len) {
     assert(str != NULL);
-    for (int i = 0; i < str_len; ++i) {
-        if (!(str[i] == '+' || str[i] != '-')) return false; //TODO: cringe
-    }
-    return true;
+
+    if (str_len == 1 && (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/')) return true; //TODO: cringe
+
+    return false;
 }
 
 

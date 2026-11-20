@@ -33,3 +33,16 @@ int tree_free(Tree *tree) {
 
     return TREE_OK;
 }
+
+
+Tree *new_node(tree_elem_type_t type, tree_elem_t val, Tree *left, Tree *right) {
+    Tree *node = NULL;
+    tree_make_node(&node);
+
+    node->type = type;
+    node->val = val;
+    node->left = left;
+    node->right = right;
+
+    return node;
+}

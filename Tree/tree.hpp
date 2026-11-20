@@ -23,7 +23,7 @@ enum operations : int {
 
 union tree_elem_t {
     double val_double;
-    int val_int;
+    int val_int; //TODO: to enum + int
 };
 
 typedef struct tree_node_t {
@@ -78,6 +78,7 @@ FILE *safe_fopen(const char *filename, const char *mode);
 
 void tree_error_print(int err);
 int tree_make_node(Tree **node);
+Tree *new_node(tree_elem_type_t type, tree_elem_t val, Tree *left, Tree *right);
 int tree_free(Tree *tree);
 int tree_insert(Tree **tree, tree_elem_t val);
 void tree_print(FILE *fp, Tree *tree);
@@ -85,5 +86,8 @@ void tree_write(const char *filename, Tree *tree);
 int tree_read(const char *filename, Tree **tree);
 
 int tree_to_graphviz(Tree *tree);
+
+const char *type_to_str(Tree *node);
+const char *operation_to_str(Tree *node);
 
 #endif

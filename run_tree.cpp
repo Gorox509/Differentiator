@@ -1,9 +1,10 @@
+#include "Tree/tree.hpp"
 #include <string.h>
 #include <assert.h>
 
 static int do_program(int argc, char *argv[]);
 
-#include "tree.hpp"
+#include "diff.hpp"
 
 int main(int argc, char *argv[]) {
     do_program(argc, argv);
@@ -19,16 +20,29 @@ int do_program(int argc, char *argv[]) {
     }
 
     Tree *tree = NULL;
+    Tree *diff_tree = NULL;
+    bool has_var = false;
+    double x = 0;
     tree_read(argv[1], &tree);
 
-    tree_elem_t val = {};
+    tree_print(stdout, tree); putchar('\n');
 
-    tree_print(stdout, tree);
-    tree_write(argv[2], tree);
+    diff_tree = diff(tree);
 
-    tree_to_graphviz(tree);
+    tree_print(stderr, tree); putc('\n', stderr);
+    tree_print(stderr, diff_tree); putc('\n', stderr);
+
+    fprintf(stderr, "What x is: ");
+    scanf("%lg", &x);
+
+    fprintf(stderr, "%lg\n", evaluate(diff_tree, (tree_elem_t){.val_double = x}, &has_var).val_double);
+
+    tree_write(argv[2], diff_tree);
+
+    tree_to_graphviz(diff_tree);
 
     tree_free(tree);
+    tree_free(diff_tree);
 
     return 0;
 }
