@@ -1,0 +1,11 @@
+digraph G {
+rankdir=TB;
+node[fontsize=12];
+splines=line;
+bgcolor=white;
+node0x7baf653e0070[ color = black , style = filled, fillcolor = gray67, shape = Mrecord , label = "{type = OP | val = 1 }" ];
+node0x7baf653e00a0[ color = black , style = filled, fillcolor = olivedrab1, shape = Mrecord , label = "{type = CONST | val = 3 }" ];
+node0x7baf653e0070 -> node0x7baf653e00a0 [ label="", color="green", dir=none ];
+node0x7baf653e00d0[ color = black , style = filled, fillcolor = olivedrab1, shape = Mrecord , label = "{type = CONST | val = 2 }" ];
+node0x7baf653e0070 -> node0x7baf653e00d0 [ label="", color="green", dir=none ];
+}
