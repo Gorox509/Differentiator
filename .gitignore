@@ -4,5 +4,6 @@
 *.tree
 *.log
 latex/
+graphviz/
 *.pdf
 *.aux

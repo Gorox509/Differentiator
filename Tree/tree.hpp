@@ -59,7 +59,7 @@ typedef struct tree_node_t {
 
 #define EXIT_ERR(...)  { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) { tree_error_print(err); exit(err); } }
 #define CHECK_ERR(...) { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) return err; }
-
+//TODO: tree_exit_err
 
 #ifdef READ_DEBUG
 #define ON_READ_DEBUG(...) __VA_ARGS__

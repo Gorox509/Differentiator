@@ -112,15 +112,16 @@ int try_reduce_const_tree(Tree **tree, bool *has_changes) {
     assert(has_changes != NULL);
 
     if (*tree == NULL) return TREE_OK;
+    if (TYPE(*tree) != operation) return TREE_OK;
 
     bool left_not_const = true, right_not_const = true;
     tree_elem_t val_l = {}, val_r = {};
 
-    if (val_l = evaluate(LEFT(*tree), {NAN}, &left_not_const),
+    if (val_l = evaluate(LEFT(*tree), {NAN}, &left_not_const), //TODO: to try_...
         val_r = evaluate(RIGHT(*tree),{NAN}, &right_not_const),
         !left_not_const && !right_not_const)
-    {
-        DATA(*tree) = (tree_elem_t) {val_l.val_double + val_r.val_double}; // if evaluation can happen then val_l and val_r are some constants
+    {//TODO: apply_func
+        DATA(*tree) = apply_operation(DATA(*tree).val_int, val_l, val_r); // if evaluation can happen then val_l and val_r are some constants
         *has_changes = true;
         tree_free(LEFT(*tree));
         tree_free(RIGHT(*tree));

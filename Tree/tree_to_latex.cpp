@@ -124,7 +124,7 @@ int make_latex_file(const char *filename) {
     assert(filename != NULL);
     int err = TREE_LATEX_DUMP_OK;
 
-    if (system("mkdir " LATEX_DIR " 2>/dev/null")) {
+    if (system("mkdir -p " LATEX_DIR)) {
         ON_TREE_DEBUG(fprintf(stderr, "Warning: directory already exists or cannot be created\n"));
         err = TREE_LATEX_DUMP_CANNOT_OPEN_FILE;
     }
