@@ -5,5 +5,6 @@
 
 Tree *diff(Tree *node);
 tree_elem_t evaluate(Tree *tree, tree_elem_t var, bool *has_var);
+int reduce(Tree **tree);
 
 #endif

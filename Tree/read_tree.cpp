@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <sys/stat.h>
+#include <string.h>
 
 
 
@@ -125,7 +126,7 @@ bool is_all_digits(const char *str, int str_len) {
 bool is_operation(const char *str, int str_len) {
     assert(str != NULL);
 
-    if (str_len == 1 && (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/')) return true; //TODO: cringe
+    if (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/' || str[0] == '^' || !strncmp(str, "log", MAX_STR_LEN)) return true; //TODO: cringe
 
     return false;
 }
@@ -140,9 +141,13 @@ enum operations get_operation_num(const char *str, int str_len) {
         case '-': return minus;
         case '*': return mult;
         case '/': return divide;
+        case '^': return power;
 
-        default: return unknown;
+        default: break;
     }
+    if (!strncmp(str, "log", MAX_STR_LEN)) return log_op;
+
+    return unknown;
 }
 
 

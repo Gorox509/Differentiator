@@ -2,3 +2,7 @@
 *.gtree
 *.out
 *.tree
+*.log
+latex/
+*.pdf
+*.aux

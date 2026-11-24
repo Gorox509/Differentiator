@@ -1,9 +1,7 @@
 #include "tree.hpp"
 #include <assert.h>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <sys/dir.h>
+#include <string.h>
 
 
 #define GRAPHVIZ_DIR "graphviz/"

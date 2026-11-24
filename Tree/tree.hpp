@@ -19,6 +19,8 @@ enum operations : int {
     minus,
     divide,
     mult,
+    power,
+    log_op,
 };
 
 union tree_elem_t {
@@ -49,6 +51,10 @@ typedef struct tree_node_t {
 #define TREE_GRAPHVIZ_OK                    (+0)
 #define TREE_GRAPHVIZ_FAILED_TO_MAKE_DIR    (-1)
 #define TREE_GRAPHVIZ_FAILED_TO_OPEN_FILE   (-2)
+
+#define TREE_LATEX_DUMP_OK                  (+0)
+#define TREE_LATEX_DUMP_CANNOT_OPEN_FILE    (-1)
+#define TREE_LATEX_DUMP_UNKNOWN_OPERATION   (-2)
 
 
 #define EXIT_ERR(...)  { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) { tree_error_print(err); exit(err); } }
@@ -86,6 +92,7 @@ void tree_write(const char *filename, Tree *tree);
 int tree_read(const char *filename, Tree **tree);
 
 int tree_to_graphviz(Tree *tree);
+int tree_to_latex(Tree *tree);
 
 const char *type_to_str(Tree *node);
 const char *operation_to_str(Tree *node);

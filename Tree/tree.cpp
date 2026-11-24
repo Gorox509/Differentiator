@@ -6,9 +6,9 @@ static int tree_insert_left(Tree *tree, tree_elem_t val);
 static int tree_insert_right(Tree *tree, tree_elem_t val);
 
 static void tree_print_data(FILE *fp, Tree *tree);
-static void print_constant(FILE *fp, double val);
-static void print_operation(FILE *fp, int opcode);
-static void print_variable(FILE *fp, int var_num);
+static void print_constant(FILE *fp, Tree *node);
+static void print_operation(FILE *fp, Tree *node);
+static void print_variable(FILE *fp, Tree *node);
 
 
 void tree_error_print(int err) {
@@ -105,46 +105,30 @@ void tree_print_data(FILE *fp, Tree *tree) {
 
     switch (TYPE(tree)) {
     case constant:
-        print_constant(fp, DATA(tree).val_double);
+        print_constant(fp, tree);
         break;
     case operation:
-        print_operation(fp, DATA(tree).val_int);
+        print_operation(fp, tree);
         break;
     case variable:
-        print_variable(fp, DATA(tree).val_int);
+        print_variable(fp, tree);
         break;
 
     default: break;
     }
 }
 
-void print_constant(FILE *fp, double val) {
+void print_constant(FILE *fp, Tree *node) {
     assert(fp != NULL);
-    fprintf(fp, "%lg", val);
+    fprintf(fp, "%lg", DATA(node).val_double);
 }
 
-void print_operation(FILE *fp, int num) {
+void print_operation(FILE *fp, Tree *node) {
     assert(fp != NULL);
-    switch (num) {
-        case plus:
-            fprintf(fp, "+");
-            return;
-        case minus:
-            fprintf(fp, "-");
-            return;
-        case mult:
-            fprintf(fp, "*");
-            return;
-        case divide:
-            fprintf(fp, "/");
-            return;
-
-        case unknown:
-        default: return;
-    }
+    fprintf(fp, "%s", operation_to_str(node));
 }
 
-void print_variable(FILE *fp, int var_num) {
+void print_variable(FILE *fp, Tree *node) {
     assert(fp != NULL);
     fprintf(fp, "x"); //TODO: cringe
 }
@@ -195,6 +179,8 @@ const char *operation_to_str(Tree *node) {
         case minus: return "-";
         case mult:  return "*";
         case divide:return "/";
+        case power: return "^";
+        case log_op:return "log";
 
         default: return "";
     }
