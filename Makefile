@@ -16,9 +16,9 @@ CFLAGS=-ggdb3 -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations 
 DEFINES=
 
 
-all: make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o
-	@$(CC) $(CFLAGS) $(DEFINES) make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o -o tree.out
-	@rm -f make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o
+all: make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o reduce.o
+	@$(CC) $(CFLAGS) $(DEFINES) make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o reduce.o -o tree.out
+	@rm -f make_tree.o tree.o run_tree.o tree_to_graphviz.o read_tree.o diff.o tree_to_latex.o reduce.o
 
 make_tree.o:
 	@$(CC) $(CFLAGS) $(DEFINES) -c Tree/make_tree.cpp -o make_tree.o
@@ -40,3 +40,6 @@ diff.o:
 
 tree_to_latex.o:
 	@$(CC) $(CFLAGS) $(DEFINES) -c Tree/tree_to_latex.cpp -o tree_to_latex.o
+
+reduce.o:
+	@$(CC) $(CFLAGS) $(DEFINES) -c reduce.cpp -o reduce.o

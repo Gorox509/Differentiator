@@ -21,6 +21,7 @@ int do_program(int argc, char *argv[]) {
 
     Tree *tree = NULL;
     Tree *diff_tree = NULL;
+    Tree *double_diff_tree = NULL;
     bool has_var = false;
     double x = 0;
     tree_read(argv[1], &tree);
@@ -31,18 +32,23 @@ int do_program(int argc, char *argv[]) {
 
     reduce(&diff_tree);
 
-    fprintf(stdout, "\nWhat x is: ");
+    double_diff_tree = diff(diff_tree);
+
+    reduce(&double_diff_tree);
+
+    fprintf(stdout, "What x is: ");
     scanf("%lg", &x);
 
-    fprintf(stdout, "Derivative at x=%lg: %lg\n", x, evaluate(diff_tree, (tree_elem_t){.val_double = x}, &has_var).val_double);
+    fprintf(stdout, "Second derivative at x=%lg: %lg\n", x, evaluate(double_diff_tree, (tree_elem_t){.const_val = x}, &has_var).const_val);
 
-    tree_write(argv[2], diff_tree);
+    tree_write(argv[2], double_diff_tree);
 
-    tree_to_graphviz(diff_tree);
-    tree_to_latex(diff_tree);
+    tree_to_graphviz(double_diff_tree);
+    tree_to_latex(double_diff_tree);
 
     tree_free(tree);
     tree_free(diff_tree);
+    tree_free(double_diff_tree);
 
     return 0;
 }

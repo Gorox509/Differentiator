@@ -84,14 +84,14 @@ int graphviz_print(FILE *fp, Tree *tree, int level) {
     if (tree != NULL) {
         if (LEFT(tree) != NULL) {
             graphviz_print(fp, LEFT(tree),  level + 1);
-            fprintf(fp, "node%p -> node%p [ label=\"\", color=\"green\", dir=none ];\n",
-                tree, LEFT(tree));
+            fprintf(fp, "node%d%p -> node%d%p [ label=\"\", color=\"green\", dir=none ];\n",
+                level, tree, level + 1, LEFT(tree));
         }
 
         if (RIGHT(tree) != NULL) {
             graphviz_print(fp, RIGHT(tree), level + 1);
-            fprintf(fp, "node%p -> node%p [ label=\"\", color=\"green\", dir=none ];\n",
-                tree, RIGHT(tree));
+            fprintf(fp, "node%d%p -> node%d%p [ label=\"\", color=\"green\", dir=none ];\n",
+                level, tree, level + 1, RIGHT(tree));
         }
     }
 
@@ -112,12 +112,12 @@ int graphviz_print_node(FILE *fp, Tree *node, int level) {
     char s[MAX_STR_LEN] = "";
     if (TYPE(node) == operation) op_or_var = operation_to_str(node);
     if (TYPE(node) == variable) op_or_var = "x";
-    if (TYPE(node) == constant) sprintf(s, "%lg", DATA(node).val_double);
+    if (TYPE(node) == constant) sprintf(s, "%lg", DATA(node).const_val);
     if (op_or_var == NULL) op_or_var = "";
     //TODO: rank
-    fprintf(fp, "node%p[ color = %s , style = filled, fillcolor = %s, shape = Mrecord , "
+    fprintf(fp, "node%d%p[ color = %s , style = filled, fillcolor = %s, shape = Mrecord , "
         "label = \"{" ON_TREE_DEBUG("<address> address = %p |") "%s | %s" ON_TREE_DEBUG(" | { <left> left = %p | <right> right = %p }") " }\" ];\n",
-        node, color, fillcolor, ON_TREE_DEBUG(node,) type_to_str(node), strcat(s, op_or_var) ON_TREE_DEBUG(, LEFT(node), RIGHT(node)));
+        level, (void*) node, color, fillcolor, ON_TREE_DEBUG(node,) type_to_str(node), strcat(s, op_or_var) ON_TREE_DEBUG(, LEFT(node), RIGHT(node)));
 
     return TREE_GRAPHVIZ_OK;
 }

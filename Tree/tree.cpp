@@ -36,7 +36,7 @@ int tree_insert(Tree **tree, tree_elem_t val) {
     assert(tree != NULL);
 
     if (*tree == NULL) {
-        EXIT_ERR(tree_make_node(tree));
+        TREE_EXIT_ERR(tree_make_node(tree));
         data_type_copy(&DATA(*tree), &val);
         return TREE_OK;
     }
@@ -61,7 +61,7 @@ int tree_insert_left(Tree *tree, tree_elem_t val) {
     assert(tree != NULL);
 
     tree_node_t *new_node = NULL;
-    EXIT_ERR(tree_make_node(&new_node));
+    TREE_EXIT_ERR(tree_make_node(&new_node));
     data_type_copy(&DATA(new_node), &val);
 
     LEFT(tree) = new_node;
@@ -74,7 +74,7 @@ int tree_insert_right(Tree *tree, tree_elem_t val) {
     assert(tree != NULL);
 
     tree_node_t *new_node = NULL;
-    EXIT_ERR(tree_make_node(&new_node));
+    TREE_EXIT_ERR(tree_make_node(&new_node));
     data_type_copy(&DATA(new_node), &val);
 
     RIGHT(tree) = new_node;
@@ -120,7 +120,7 @@ void tree_print_data(FILE *fp, Tree *tree) {
 
 void print_constant(FILE *fp, Tree *node) {
     assert(fp != NULL);
-    fprintf(fp, "%lg", DATA(node).val_double);
+    fprintf(fp, "%lg", DATA(node).const_val);
 }
 
 void print_operation(FILE *fp, Tree *node) {
@@ -174,7 +174,7 @@ const char *operation_to_str(Tree *node) {
     assert(node != NULL);
     assert(TYPE(node) == operation);
 
-    switch (DATA(node).val_int) {
+    switch (DATA(node).op_code) {
         case plus:  return "+";
         case minus: return "-";
         case mult:  return "*";
@@ -182,6 +182,6 @@ const char *operation_to_str(Tree *node) {
         case power: return "^";
         case log_op:return "log";
 
-        default: return "";
+        case unknown: default: return "";
     }
 }

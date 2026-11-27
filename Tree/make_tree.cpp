@@ -25,9 +25,9 @@ int tree_make_node(Tree **node) {
 int tree_free(Tree *tree) {
     if (tree == NULL) return TREE_OK;
 
-    EXIT_ERR(tree_free(LEFT(tree)));
+    TREE_EXIT_ERR(tree_free(LEFT(tree)));
     data_type_free(DATA(tree));
-    EXIT_ERR(tree_free(RIGHT(tree)));
+    TREE_EXIT_ERR(tree_free(RIGHT(tree)));
 
     free(tree);
 

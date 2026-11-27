@@ -34,7 +34,7 @@ int tree_read(const char *filename, Tree **tree) {
     fclose(fp);
 
     int parsed = 0;
-    EXIT_ERR(tree_parse_node(buf, tree, &parsed))
+    TREE_EXIT_ERR(tree_parse_node(buf, tree, &parsed));
     free(buf);
 
     return TREE_OK;
@@ -53,19 +53,19 @@ int tree_parse_node(char *buf, Tree **tree, int *parsed) {
         return TREE_OK;
     }
     if (*tree == NULL) {
-        EXIT_ERR(tree_make_node(tree));
+        TREE_EXIT_ERR(tree_make_node(tree));
     }
 
     ON_READ_DEBUG(fprintf(stderr, "scanning left...\n"));
-    EXIT_ERR(tree_parse_node(buf, &LEFT(*tree), parsed));
+    TREE_EXIT_ERR(tree_parse_node(buf, &LEFT(*tree), parsed));
     ON_READ_DEBUG(fprintf(stderr, "left scanned\n"));
 
     ON_READ_DEBUG(fprintf(stderr, "scanning data...: "));
-    EXIT_ERR(tree_parse_data(buf, tree, parsed));
+    TREE_EXIT_ERR(tree_parse_data(buf, tree, parsed));
     ON_READ_DEBUG(fprintf(stderr, "data scanned\n"));
 
     ON_READ_DEBUG(fprintf(stderr, "scanning right...\n"));
-    EXIT_ERR(tree_parse_node(buf, &RIGHT(*tree), parsed));
+    TREE_EXIT_ERR(tree_parse_node(buf, &RIGHT(*tree), parsed));
     ON_READ_DEBUG(fprintf(stderr, "right scanned\n"));
 
     if (buf[(*parsed)++] != ')') return TREE_READ_WRONG_SYNTAX;
@@ -87,7 +87,7 @@ int tree_parse_data(char *buf, Tree **tree, int *parsed) {
     *parsed += scanned;
     ON_READ_DEBUG(fprintf(stderr, "%s\n", str));
 
-    EXIT_ERR(str_to_tree_data(tree, str, scanned));
+    TREE_EXIT_ERR(str_to_tree_data(tree, str, scanned));
 
     return TREE_OK;
 }
@@ -99,15 +99,15 @@ int str_to_tree_data(Tree **tree, const char str[], int str_len) {
 
     if (is_all_digits(str, str_len)) {
         TYPE(*tree) = constant;
-        DATA(*tree).val_double = strtod(str, NULL); //TODO: to own function
+        DATA(*tree).const_val = strtod(str, NULL); //TODO: to own function
     }
     else if (is_operation(str, str_len)) {
         TYPE(*tree) = operation;
-        DATA(*tree).val_int = get_operation_num(str, str_len);
+        DATA(*tree).op_code = get_operation_num(str, str_len);
     }
     else {
         TYPE(*tree) = variable;
-        DATA(*tree).val_int = get_var_num(str, str_len); //TODO: to parsing context
+        DATA(*tree).var_code = get_var_num(str, str_len); //TODO: to parsing context
     }
 
     return TREE_OK;
@@ -125,6 +125,7 @@ bool is_all_digits(const char *str, int str_len) {
 
 bool is_operation(const char *str, int str_len) {
     assert(str != NULL);
+    assert(str_len > 0);
 
     if (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/' || str[0] == '^' || !strncmp(str, "log", MAX_STR_LEN)) return true; //TODO: cringe
 

@@ -24,8 +24,9 @@ enum operations : int {
 };
 
 union tree_elem_t {
-    double val_double;
-    int val_int; //TODO: to enum + int
+    double const_val;
+    int var_code;
+    enum operations op_code;
 };
 
 typedef struct tree_node_t {
@@ -57,9 +58,9 @@ typedef struct tree_node_t {
 #define TREE_LATEX_DUMP_UNKNOWN_OPERATION   (-2)
 
 
-#define EXIT_ERR(...)  { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) { tree_error_print(err); exit(err); } }
-#define CHECK_ERR(...) { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) return err; }
-//TODO: tree_exit_err
+#define TREE_EXIT_ERR(...)  { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) { tree_error_print(err); exit(err); } }
+#define TREE_CHECK_ERR(...) { int err = TREE_OK; if ((err = __VA_ARGS__) != TREE_OK) return err; }
+
 
 #ifdef READ_DEBUG
 #define ON_READ_DEBUG(...) __VA_ARGS__
